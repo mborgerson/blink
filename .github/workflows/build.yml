@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         include:
-        - { os: 'macos-latest',     pkg: 'darwin-arm64' },
+        - { os: 'macos-latest',     pkg: 'darwin-arm64' }
         - { os: 'ubuntu-24.04-arm', pkg: 'linux-aarch64' }
     steps:
     - if: startsWith(matrix.os, 'macos')
