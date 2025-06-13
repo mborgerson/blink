@@ -31,11 +31,18 @@ jobs:
         echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
     - name: Build blink
+      if: startsWith(matrix.os, 'macos')
       run: |
         ./configure --prefix=$PWD/dist
         gmake
         gmake install
         cp LICENSE dist
+
+    - name: Build blink
+      if: startsWith(matrix.pkg, 'linux-aarch64')
+      run: |
+        docker run --rm -v $PWD:/work -w /work quay.io/pypa/manylinux_2_28_aarch64 \
+          /bin/bash -c "./configure --prefix=/work/dist && gmake && gmake install && cp LICENSE dist"
 
     - name: Package
       env:
