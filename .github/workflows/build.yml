@@ -1,0 +1,25 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['macos-latest', 'ubuntu-24.04-arm']
+
+    steps:
+    - if: startsWith(matrix.os, 'macos')
+      run: |
+        brew install make
+
+    - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      with:
+        fetch-depth: 0
+
+    - name: Build blink
+      run: |
+        ./configure --prefix=$PWD/dist
+        gmake
+        gmake install
